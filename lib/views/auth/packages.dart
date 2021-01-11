@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/views/widgets/package_card.dart';
 
 class Packages extends StatefulWidget {
   @override
@@ -83,12 +84,15 @@ class _PackagesState extends State<Packages> {
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    Text(
-                      'The package you choose is the estimation of how many people enter your shop a day.',
-                      style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          color: textColor,
+                    FadeAnimation(
+                      1.2,
+                      Text(
+                        'The package you choose is the estimation of how many people enter your shop a day.',
+                        style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                            fontSize: 16,
+                            color: textColor,
+                          ),
                         ),
                       ),
                     ),
@@ -99,7 +103,7 @@ class _PackagesState extends State<Packages> {
               Container(
                 padding: EdgeInsets.only(left: 20),
                 child: FadeAnimation(
-                  1,
+                  1.4,
                   Text(
                     'Avarage Packages',
                     style: GoogleFonts.roboto(
@@ -120,29 +124,38 @@ class _PackagesState extends State<Packages> {
                   padding: const EdgeInsets.only(bottom: 20, left: 30),
                   scrollDirection: Axis.horizontal,
                   children: [
-                    makeCard(
-                      context: context,
-                      packageSize: "X-small",
-                      packageRange: '0 - 100',
-                      price: 'R120',
-                      startColor: darkBlue,
-                      endColor: mainBlue,
+                    FadeAnimation(
+                      1.6,
+                      makeCard(
+                        context: context,
+                        packageSize: "X-small",
+                        packageRange: '0 - 100',
+                        price: 'R120',
+                        startColor: darkBlue,
+                        endColor: mainBlue,
+                      ),
                     ),
-                    makeCard(
-                      context: context,
-                      packageSize: "Small",
-                      packageRange: '100 - 300',
-                      price: 'R200',
-                      startColor: darkBlue,
-                      endColor: mainBlue,
+                    FadeAnimation(
+                      1.8,
+                      makeCard(
+                        context: context,
+                        packageSize: "Small",
+                        packageRange: '100 - 300',
+                        price: 'R200',
+                        startColor: darkBlue,
+                        endColor: mainBlue,
+                      ),
                     ),
-                    makeCard(
-                      context: context,
-                      packageSize: "Medium",
-                      packageRange: '300 - 500',
-                      price: 'R300',
-                      startColor: darkBlue,
-                      endColor: mainBlue,
+                    FadeAnimation(
+                      2,
+                      makeCard(
+                        context: context,
+                        packageSize: "Medium",
+                        packageRange: '300 - 500',
+                        price: 'R300',
+                        startColor: darkBlue,
+                        endColor: mainBlue,
+                      ),
                     ),
                   ],
                 ),
@@ -151,7 +164,7 @@ class _PackagesState extends State<Packages> {
               Container(
                 padding: EdgeInsets.only(left: 20),
                 child: FadeAnimation(
-                  1,
+                  1.4,
                   Text(
                     'Mega Packages',
                     style: GoogleFonts.roboto(
@@ -172,29 +185,38 @@ class _PackagesState extends State<Packages> {
                   padding: const EdgeInsets.only(bottom: 20, left: 30),
                   scrollDirection: Axis.horizontal,
                   children: [
-                    makeCard(
-                      context: context,
-                      packageSize: "Large",
-                      packageRange: '0 - 100',
-                      price: 'R500',
-                      startColor: darkOrange,
-                      endColor: mainOrange,
+                    FadeAnimation(
+                      1.6,
+                      makeCard(
+                        context: context,
+                        packageSize: "Large",
+                        packageRange: '500 - 700',
+                        price: 'R500',
+                        startColor: darkOrange,
+                        endColor: mainOrange,
+                      ),
                     ),
-                    makeCard(
-                      context: context,
-                      packageSize: "X-large",
-                      packageRange: '100 - 300',
-                      price: 'R1000',
-                      startColor: darkOrange,
-                      endColor: mainOrange,
+                    FadeAnimation(
+                      1.8,
+                      makeCard(
+                        context: context,
+                        packageSize: "X-large",
+                        packageRange: '700 - 2000',
+                        price: 'R1000',
+                        startColor: darkOrange,
+                        endColor: mainOrange,
+                      ),
                     ),
-                    makeCard(
-                      context: context,
-                      packageSize: "Infinite",
-                      packageRange: '300 - 500',
-                      price: 'R3000',
-                      startColor: darkOrange,
-                      endColor: mainOrange,
+                    FadeAnimation(
+                      2,
+                      makeCard(
+                        context: context,
+                        packageSize: "Infinite",
+                        packageRange: '2000+',
+                        price: 'R3000',
+                        startColor: darkOrange,
+                        endColor: mainOrange,
+                      ),
                     ),
                   ],
                 ),
