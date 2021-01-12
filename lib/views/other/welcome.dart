@@ -3,16 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/auth.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
+import 'package:infinite_data/utils/constants.dart';
 
 class WelcomePage extends StatelessWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  Auth _auth = Auth();
+  var _currentUser = Constants.AUTH.currentUser;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _initialization,
       builder: (BuildContext ctx, snapshot) {
-        return !snapshot.hasData ? loader() : pageContent(context);
+        if (snapshot.hasData) {
+          if (_currentUser == null) {
+            pageContent(context);
+          } else {
+            return FutureBuilder(
+              future: _auth.checkAuth(),
+              builder: (BuildContext ctx, snap) {
+                if (!snap.hasData) {
+                  return loader();
+                }
+              },
+            );
+          }
+        }
       },
     );
   }

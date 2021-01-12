@@ -251,7 +251,7 @@ class _RegisterState extends State<Register> {
         contactNumber: contactNumber);
     User user = User(
         companyId: '', email: email, name: companyName, password: password);
-    ResponseHander result = await _auth.registerCompany(company, user);
+    ResponseHandler result = await _auth.registerCompany(company, user);
 
     if (result.success) {
       Routes.navigator.pushReplacementNamed(Routes.packages);

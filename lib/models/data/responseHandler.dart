@@ -1,5 +1,5 @@
-class ResponseHander {
+class ResponseHandler {
   final String message;
   final bool success;
-  const ResponseHander(this.success, this.message);
+  const ResponseHandler(this.success, this.message);
 }

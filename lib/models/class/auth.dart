@@ -11,15 +11,15 @@ class Auth {
   final _userCollection = Constants.USER_COLLECTION;
   User _user = new User();
 
-  Future<ResponseHander> login(String email, String password) async {
+  Future<ResponseHandler> login(String email, String password) async {
     try {
       var userData = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       var loggedInUser = await _user.getUser(userData.user.uid);
       if (!loggedInUser.success) {
-        return new ResponseHander(false, 'Not Authorised to use this app');
+        return new ResponseHandler(false, 'Not Authorised to use this app');
       }
-      return new ResponseHander(true, '');
+      return new ResponseHandler(true, '');
     } catch (e) {
       String message;
       switch (e.code) {
@@ -33,7 +33,7 @@ class Auth {
           message = 'Wrong email or password';
           break;
       }
-      return new ResponseHander(false, message);
+      return new ResponseHandler(false, message);
     }
   }
 
@@ -42,7 +42,7 @@ class Auth {
     Routes.navigator.popAndPushNamed(Routes.login);
   }
 
-  Future<ResponseHander> registerCompany(
+  Future<ResponseHandler> registerCompany(
       Company companyDetails, User userDetails) async {
     try {
       var signupRes = await signup(userDetails);
@@ -56,15 +56,15 @@ class Auth {
             'created_at': Constants.DATE_NOW,
             'completed_registration': false
           });
-          return new ResponseHander(true, 'Account registered successfully');
+          return new ResponseHandler(true, 'Account registered successfully');
         } catch (e) {
-          return new ResponseHander(false, e.message);
+          return new ResponseHandler(false, e.message);
         }
       } else {
-        return new ResponseHander(false, signupRes.data);
+        return new ResponseHandler(false, signupRes.data);
       }
     } catch (e) {
-      return new ResponseHander(false, e.message);
+      return new ResponseHandler(false, e.message);
     }
   }
 
@@ -107,5 +107,5 @@ class Auth {
     }
   }
 
-  Future<ResponseHander> subscribe() async {}
+  Future<ResponseHandler> subscribe() async {}
 }

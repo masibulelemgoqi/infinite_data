@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/models/data/responseHandler.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
+import 'package:infinite_data/utils/validator.dart';
 import 'package:infinite_data/views/widgets/create_input.dart';
 
 class Login extends StatefulWidget {
@@ -15,6 +18,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
+  Auth _auth = Auth();
+  Validator _validator = Validator();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,9 +139,7 @@ class _LoginState extends State<Login> {
                       elevation: 1,
                       color: mainBlue,
                       onPressed: () {
-                        print(_emailController.text);
-                        print(_passwordController.text);
-                        // Routes.navigator.pushNamed(Routes.login);
+                        login();
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
@@ -197,5 +200,26 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  login() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    if (!_validator.validEmail(email).success) {
+      print(_validator.validEmail(email).message);
+      return;
+    }
+
+    if (password.length < 6) {
+      print('Invalid password');
+    }
+
+    ResponseHandler res = await _auth.login(email, password);
+    if (res.success) {
+      _auth.checkAuth();
+    } else {
+      print(res.message);
+    }
   }
 }
