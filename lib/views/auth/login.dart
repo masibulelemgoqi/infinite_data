@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
 import 'package:infinite_data/views/auth/register.dart';
+import 'package:infinite_data/views/search_home.dart';
 import 'package:infinite_data/views/widgets/create_input.dart';
 
 class Login extends StatefulWidget {
@@ -130,7 +131,7 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Login()),
+                          MaterialPageRoute(builder: (context) => SearchHome()),
                         );
                       },
                       shape: RoundedRectangleBorder(
