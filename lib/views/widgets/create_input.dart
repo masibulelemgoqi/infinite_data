@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
 
-Widget makeInput({label, obscureText = false}) {
+Widget makeInput({label, obscureText = false, @required editingController}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -23,6 +23,7 @@ Widget makeInput({label, obscureText = false}) {
         elevation: 5,
         borderRadius: BorderRadius.circular(10.0),
         child: TextFormField(
+          controller: editingController,
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),

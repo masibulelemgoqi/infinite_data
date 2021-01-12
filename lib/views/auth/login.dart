@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
-import 'package:infinite_data/views/auth/register.dart';
+import 'package:infinite_data/routes/routes.gr.dart';
 import 'package:infinite_data/views/widgets/create_input.dart';
 
 class Login extends StatefulWidget {
@@ -13,6 +13,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,11 +99,15 @@ class _LoginState extends State<Login> {
                 children: [
                   FadeAnimation(
                     1.2,
-                    makeInput(label: 'Email'),
+                    makeInput(
+                        label: 'Email', editingController: _emailController),
                   ),
                   FadeAnimation(
                     1.4,
-                    makeInput(label: 'Password', obscureText: true),
+                    makeInput(
+                        label: 'Password',
+                        obscureText: true,
+                        editingController: _passwordController),
                   ),
                   FadeAnimation(
                     1.6,
@@ -128,10 +134,9 @@ class _LoginState extends State<Login> {
                       elevation: 1,
                       color: mainBlue,
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Login()),
-                        );
+                        print(_emailController.text);
+                        print(_passwordController.text);
+                        // Routes.navigator.pushNamed(Routes.login);
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
@@ -172,10 +177,7 @@ class _LoginState extends State<Login> {
                   2.2,
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Register()),
-                      );
+                      Routes.navigator.pushNamed(Routes.register);
                     },
                     child: Text(
                       "Register",
