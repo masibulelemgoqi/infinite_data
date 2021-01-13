@@ -11,12 +11,16 @@ import 'package:infinite_data/views/other/welcome.dart';
 import 'package:infinite_data/views/auth/login.dart';
 import 'package:infinite_data/views/auth/register.dart';
 import 'package:infinite_data/views/auth/packages.dart';
+import 'package:infinite_data/views/search_home.dart';
+import 'package:infinite_data/views/search_results.dart';
 
 class Routes {
   static const welcomePage = '/';
   static const login = '/login';
   static const register = '/register';
   static const packages = '/packages';
+  static const searchHome = '/search-home';
+  static const searchResults = '/search-results';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Routes>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -42,6 +46,16 @@ class Routes {
       case Routes.packages:
         return MaterialPageRoute(
           builder: (_) => Packages(),
+          settings: settings,
+        );
+      case Routes.searchHome:
+        return MaterialPageRoute(
+          builder: (_) => SearchHome(),
+          settings: settings,
+        );
+      case Routes.searchResults:
+        return MaterialPageRoute(
+          builder: (_) => SearchResults(),
           settings: settings,
         );
       default:

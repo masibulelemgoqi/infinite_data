@@ -1,10 +1,13 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
 import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/models/class/user.dart';
+import 'package:infinite_data/models/data/ResponseData.dart';
 import 'package:infinite_data/models/data/responseHandler.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 import 'package:infinite_data/utils/validator.dart';
@@ -139,7 +142,7 @@ class _LoginState extends State<Login> {
                       elevation: 1,
                       color: mainBlue,
                       onPressed: () {
-                        login();
+                        loginMethod();
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
@@ -202,7 +205,15 @@ class _LoginState extends State<Login> {
     );
   }
 
-  login() async {
+  Widget loader() {
+    return Container(
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  loginMethod() async {
     String email = _emailController.text;
     String password = _passwordController.text;
 
@@ -216,8 +227,33 @@ class _LoginState extends State<Login> {
     }
 
     ResponseHandler res = await _auth.login(email, password);
+
     if (res.success) {
-      _auth.checkAuth();
+      User _user = User();
+      _user.getCurrentUser().listen((snap) {
+        if (snap.exists) {
+          _user.populateUser(snap);
+          if (_user.getId() == _user.getCompanyId()) {
+            print(_user.getCompletedRegistration());
+            if (_user.getCompletedRegistration()) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Routes.navigator.pushNamed(Routes.searchHome);
+              });
+            } else {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Routes.navigator.pushNamed(Routes.packages);
+              });
+            }
+          } else {
+            // _currentUser.currentUser.delete();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Routes.navigator.pushReplacementNamed(Routes.register);
+            });
+          }
+        } else {
+          _auth.logout();
+        }
+      });
     } else {
       print(res.message);
     }

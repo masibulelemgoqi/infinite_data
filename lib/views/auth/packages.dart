@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/package.dart';
 import 'package:infinite_data/views/widgets/package_card.dart';
 
 class Packages extends StatefulWidget {
@@ -10,6 +12,7 @@ class Packages extends StatefulWidget {
 }
 
 class _PackagesState extends State<Packages> {
+  Package _package = Package();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,7 +108,7 @@ class _PackagesState extends State<Packages> {
                 child: FadeAnimation(
                   1.4,
                   Text(
-                    'Avarage Packages',
+                    'Average Packages',
                     style: GoogleFonts.roboto(
                       textStyle: TextStyle(
                         fontSize: 20,
@@ -117,48 +120,45 @@ class _PackagesState extends State<Packages> {
                 ),
               ),
               SizedBox(height: 15.0),
-              Container(
-                height: 250.0,
-                width: double.infinity,
-                child: ListView(
-                  padding: const EdgeInsets.only(bottom: 20, left: 30),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    FadeAnimation(
-                      1.6,
-                      makeCard(
-                        context: context,
-                        packageSize: "X-small",
-                        packageRange: '0 - 100',
-                        price: 'R120',
-                        startColor: darkBlue,
-                        endColor: mainBlue,
+              StreamBuilder(
+                stream: _package.getPackages('AVERAGE'),
+                builder:
+                    (BuildContext ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    QuerySnapshot data = snapshot.data;
+                    return Container(
+                      height: 250.0,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        itemCount: data.docs.length,
+                        padding: const EdgeInsets.only(bottom: 20, left: 30),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (ctx, index) {
+                          _package.populatePackages(data.docs[index]);
+                          var range = _package.getClientsMax() ==
+                                  _package.getClientsMin()
+                              ? '${_package.getClientsMax()}+'
+                              : '${_package.getClientsMin()} - ${_package.getClientsMax()}';
+                          return FadeAnimation(
+                            1.6,
+                            makeCard(
+                              package: _package,
+                              id: _package.getId(),
+                              context: context,
+                              packageSize: _package.getName(),
+                              packageRange: range,
+                              price: _package.getPrice(),
+                              startColor: darkBlue,
+                              endColor: mainBlue,
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                    FadeAnimation(
-                      1.8,
-                      makeCard(
-                        context: context,
-                        packageSize: "Small",
-                        packageRange: '100 - 300',
-                        price: 'R200',
-                        startColor: darkBlue,
-                        endColor: mainBlue,
-                      ),
-                    ),
-                    FadeAnimation(
-                      2,
-                      makeCard(
-                        context: context,
-                        packageSize: "Medium",
-                        packageRange: '300 - 500',
-                        price: 'R300',
-                        startColor: darkBlue,
-                        endColor: mainBlue,
-                      ),
-                    ),
-                  ],
-                ),
+                    );
+                  }
+
+                  return Container();
+                },
               ),
               SizedBox(height: 20.0),
               Container(
@@ -178,48 +178,45 @@ class _PackagesState extends State<Packages> {
                 ),
               ),
               SizedBox(height: 15.0),
-              Container(
-                height: 250.0,
-                width: double.infinity,
-                child: ListView(
-                  padding: const EdgeInsets.only(bottom: 20, left: 30),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    FadeAnimation(
-                      1.6,
-                      makeCard(
-                        context: context,
-                        packageSize: "Large",
-                        packageRange: '500 - 700',
-                        price: 'R500',
-                        startColor: darkOrange,
-                        endColor: mainOrange,
+              StreamBuilder(
+                stream: _package.getPackages('INFINITE'),
+                builder:
+                    (BuildContext ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    QuerySnapshot data = snapshot.data;
+                    return Container(
+                      height: 250.0,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        itemCount: data.docs.length,
+                        padding: const EdgeInsets.only(bottom: 20, left: 30),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (ctx, index) {
+                          _package.populatePackages(data.docs[index]);
+                          var range = _package.getClientsMax() ==
+                                  _package.getClientsMin()
+                              ? '${_package.getClientsMax()}+'
+                              : '${_package.getClientsMin()} - ${_package.getClientsMax()}';
+                          return FadeAnimation(
+                            1.6,
+                            makeCard(
+                              package: _package,
+                              id: _package.getId(),
+                              context: context,
+                              packageSize: _package.getName(),
+                              packageRange: range,
+                              price: _package.getPrice(),
+                              startColor: darkOrange,
+                              endColor: mainOrange,
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                    FadeAnimation(
-                      1.8,
-                      makeCard(
-                        context: context,
-                        packageSize: "X-large",
-                        packageRange: '700 - 2000',
-                        price: 'R1000',
-                        startColor: darkOrange,
-                        endColor: mainOrange,
-                      ),
-                    ),
-                    FadeAnimation(
-                      2,
-                      makeCard(
-                        context: context,
-                        packageSize: "Infinite",
-                        packageRange: '2000+',
-                        price: 'R3000',
-                        startColor: darkOrange,
-                        endColor: mainOrange,
-                      ),
-                    ),
-                  ],
-                ),
+                    );
+                  }
+
+                  return Container();
+                },
               ),
             ],
           ),

@@ -1,11 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class SubscriptionData {
   String _packageId, _packageName;
   double _packagePrice;
+  Timestamp _nextBillingDate;
   SubscriptionData(
-      {String packageId, String packageName, double packagePrice}) {
+      {String packageId,
+      String packageName,
+      double packagePrice,
+      Timestamp nextBillingDate}) {
     _packageId = packageId;
     _packageName = packageName;
     _packagePrice = packagePrice;
+    _nextBillingDate = nextBillingDate;
   }
 
   getPackageId() {
@@ -18,5 +25,9 @@ class SubscriptionData {
 
   getPackagePrice() {
     return _packagePrice;
+  }
+
+  getNextBillingDate() {
+    return _nextBillingDate;
   }
 }

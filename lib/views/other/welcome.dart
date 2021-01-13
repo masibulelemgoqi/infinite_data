@@ -1,35 +1,61 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
 import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/models/class/user.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 import 'package:infinite_data/utils/constants.dart';
 
 class WelcomePage extends StatelessWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  Auth _auth = Auth();
-  var _currentUser = Constants.AUTH.currentUser;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _initialization,
       builder: (BuildContext ctx, snapshot) {
         if (snapshot.hasData) {
-          if (_currentUser == null) {
-            pageContent(context);
+          User _user = User();
+          var _currentUser = Constants.AUTH;
+          if (_currentUser.currentUser == null) {
+            return pageContent(context);
           } else {
-            return FutureBuilder(
-              future: _auth.checkAuth(),
-              builder: (BuildContext ctx, snap) {
-                if (!snap.hasData) {
-                  return loader();
+            return StreamBuilder(
+              stream: _user.getCurrentUser(),
+              builder: (ctx, AsyncSnapshot<DocumentSnapshot> snap) {
+                if (snap.hasData) {
+                  var data = snap.data;
+                  if (data.exists) {
+                    _user.populateUser(snap.data);
+                    if (_user.getId() == _user.getCompanyId()) {
+                      if (_user.getCompletedRegistration()) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Routes.navigator.pushNamed(Routes.searchHome);
+                        });
+                      } else {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Routes.navigator.pushNamed(Routes.packages);
+                        });
+                      }
+                    } else {
+                      // _currentUser.currentUser.delete();
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Routes.navigator.pushReplacementNamed(Routes.register);
+                      });
+                    }
+                  } else {
+                    Auth _auth = Auth();
+                    _auth.logout();
+                  }
                 }
+                return loader();
               },
             );
           }
         }
+        return loader();
       },
     );
   }

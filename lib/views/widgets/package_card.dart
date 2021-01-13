@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/models/class/package.dart';
+import 'package:infinite_data/models/data/responseHandler.dart';
+import 'package:infinite_data/routes/routes.gr.dart';
 
 Widget makeCard(
-    {context, packageSize, packageRange, price, startColor, endColor}) {
+    {context,
+    id,
+    Package package,
+    packageSize,
+    packageRange,
+    price,
+    startColor,
+    endColor}) {
   return GestureDetector(
     onTap: () {},
     child: AspectRatio(
@@ -48,7 +59,7 @@ Widget makeCard(
                   Row(
                     children: [
                       Text(
-                        price,
+                        'R${price}',
                         style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                             fontSize: 22,
@@ -107,7 +118,16 @@ Widget makeCard(
             ),
             SizedBox(height: 20.0),
             RaisedButton(
-              onPressed: () {},
+              onPressed: () async {
+                Auth _auth = Auth();
+                ResponseHandler handler = await _auth.subscribe(package);
+
+                if (handler.success) {
+                  Routes.navigator.pushReplacementNamed(Routes.searchHome);
+                } else {
+                  print(handler.message);
+                }
+              },
               color: darkColor,
               elevation: 3,
               shape: RoundedRectangleBorder(

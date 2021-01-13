@@ -1,3 +1,4 @@
+import 'package:infinite_data/models/class/package.dart';
 import 'package:infinite_data/models/class/user.dart';
 import 'package:infinite_data/models/data/ResponseData.dart';
 import 'package:infinite_data/models/class/company.dart';
@@ -14,13 +15,15 @@ class Auth {
   Future<ResponseHandler> login(String email, String password) async {
     try {
       var userData = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+          email: email.trim(), password: password.trim());
       var loggedInUser = await _user.getUser(userData.user.uid);
       if (!loggedInUser.success) {
         return new ResponseHandler(false, 'Not Authorised to use this app');
       }
+
       return new ResponseHandler(true, '');
     } catch (e) {
+      print(e);
       String message;
       switch (e.code) {
         case 'user-not-found':
@@ -97,15 +100,25 @@ class Auth {
     }
   }
 
-  Future<void> checkAuth() async {
-    if (_auth.currentUser != null) {
-      ResponseData user = await _user.getUser(_auth.currentUser.uid);
-      bool completedRegistration = user.data['completed_registration'];
-      if (!completedRegistration) {
-        Routes.navigator.pushReplacementNamed(Routes.packages);
-      }
+  Future<ResponseHandler> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return ResponseHandler(true, 'Email Reset link is sent to your email');
+    } catch (e) {
+      return ResponseHandler(false, e.message);
     }
   }
 
-  Future<ResponseHandler> subscribe() async {}
+  Future<ResponseHandler> subscribe(Package package) async {
+    try {
+      await _userCollection.doc(_auth.currentUser.uid).update({
+        'next_billing_date': Constants.DATE_NOW,
+        'package_id': package.getId(),
+        'completed_registration': true
+      });
+      return new ResponseHandler(true, 'Subscribed successfully');
+    } catch (e) {
+      return new ResponseHandler(false, e.message);
+    }
+  }
 }

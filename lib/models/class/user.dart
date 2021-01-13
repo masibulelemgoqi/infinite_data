@@ -4,43 +4,52 @@ import 'package:infinite_data/utils/constants.dart';
 
 class User {
   String _id, _name, _email, _password, _companyId;
+  Timestamp _createdAt;
+  bool _completedRegistration;
 
-  User({id, name, email, password, companyId}) {
+  User(
+      {id,
+      name,
+      email,
+      password,
+      companyId,
+      createdAt,
+      completedRegistration}) {
     _id = id;
     _name = name;
     _email = email;
     _password = password;
     _companyId = companyId;
+    _createdAt = createdAt;
+    _completedRegistration = completedRegistration;
   }
 
-  populateUser(DocumentSnapshot user) {
-    var id = user.id;
-    var data = user.data();
-    User(
-        companyId: data['company_id'],
-        id: id,
-        email: data['email'],
-        name: data['name']);
-  }
-
-  getId() {
+  String getId() {
     return _id;
   }
 
-  getName() {
+  String getName() {
     return _name;
   }
 
-  getEmail() {
+  String getEmail() {
     return _email;
   }
 
-  getCompanyId() {
+  String getCompanyId() {
     return _companyId;
   }
 
-  getPassword() {
+  String getPassword() {
     return this._password;
+  }
+
+  Timestamp getCreatedAt() {
+    return _createdAt;
+  }
+
+  bool getCompletedRegistration() {
+    return _completedRegistration;
   }
 
   Future<ResponseData> getUser(id) async {
@@ -56,5 +65,19 @@ class User {
     return Constants.USER_COLLECTION
         .doc(Constants.AUTH.currentUser.uid)
         .snapshots();
+  }
+
+  populateUser(DocumentSnapshot user) {
+    var id = user.id;
+    var data = user.data();
+    bool cR = data.containsKey('completed_registration')
+        ? data['completed_registration']
+        : false;
+    _companyId = data['company_id'].toString().trim();
+    _id = id.toString().trim();
+    _email = data['email'].toString().trim();
+    _name = data['name'].toString().trim();
+    _createdAt = data['created_at'];
+    _completedRegistration = cR;
   }
 }

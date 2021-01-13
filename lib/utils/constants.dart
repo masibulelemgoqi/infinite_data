@@ -13,6 +13,7 @@ class Constants {
   static final RECEIPT_COLLECTION = (String companyId) =>
       COMPANY_COLLECTION.doc(companyId).collection('receipt');
   static final PACKAGE_COLLECTION = _firestore.collection('package');
-
+  static final SCREENING_COLLECTION =
+      (String id) => CLIENT_COLLECTION.doc(id).collection('screening');
   static final DATE_NOW = FieldValue.serverTimestamp();
 }
