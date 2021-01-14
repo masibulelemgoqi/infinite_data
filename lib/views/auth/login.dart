@@ -1,11 +1,16 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
-import 'package:infinite_data/views/auth/register.dart';
-import 'package:infinite_data/views/search_home.dart';
+import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/models/class/user.dart';
+import 'package:infinite_data/models/data/ResponseData.dart';
+import 'package:infinite_data/models/data/responseHandler.dart';
+import 'package:infinite_data/routes/routes.gr.dart';
+import 'package:infinite_data/utils/validator.dart';
 import 'package:infinite_data/views/widgets/create_input.dart';
 
 class Login extends StatefulWidget {
@@ -14,6 +19,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  Auth _auth = Auth();
+  Validator _validator = Validator();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,11 +107,15 @@ class _LoginState extends State<Login> {
                 children: [
                   FadeAnimation(
                     1.2,
-                    makeInput(label: 'Email'),
+                    makeInput(
+                        label: 'Email', editingController: _emailController),
                   ),
                   FadeAnimation(
                     1.4,
-                    makeInput(label: 'Password', obscureText: true),
+                    makeInput(
+                        label: 'Password',
+                        obscureText: true,
+                        editingController: _passwordController),
                   ),
                   FadeAnimation(
                     1.6,
@@ -129,10 +142,7 @@ class _LoginState extends State<Login> {
                       elevation: 1,
                       color: mainBlue,
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SearchHome()),
-                        );
+                        loginMethod();
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
@@ -173,10 +183,7 @@ class _LoginState extends State<Login> {
                   2.2,
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Register()),
-                      );
+                      Routes.navigator.pushNamed(Routes.register);
                     },
                     child: Text(
                       "Register",
@@ -196,5 +203,59 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Widget loader() {
+    return Container(
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  loginMethod() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    if (!_validator.validEmail(email).success) {
+      print(_validator.validEmail(email).message);
+      return;
+    }
+
+    if (password.length < 6) {
+      print('Invalid password');
+    }
+
+    ResponseHandler res = await _auth.login(email, password);
+
+    if (res.success) {
+      User _user = User();
+      _user.getCurrentUser().listen((snap) {
+        if (snap.exists) {
+          _user.populateUser(snap);
+          if (_user.getId() == _user.getCompanyId()) {
+            print(_user.getCompletedRegistration());
+            if (_user.getCompletedRegistration()) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Routes.navigator.pushNamed(Routes.searchHome);
+              });
+            } else {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Routes.navigator.pushNamed(Routes.packages);
+              });
+            }
+          } else {
+            // _currentUser.currentUser.delete();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Routes.navigator.pushReplacementNamed(Routes.register);
+            });
+          }
+        } else {
+          _auth.logout();
+        }
+      });
+    } else {
+      print(res.message);
+    }
   }
 }

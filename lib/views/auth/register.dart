@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
-import 'package:infinite_data/views/auth/login.dart';
-import 'package:infinite_data/views/auth/packages.dart';
+import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/models/class/user.dart';
+import 'package:infinite_data/models/class/company.dart';
+import 'package:infinite_data/models/data/responseHandler.dart';
+import 'package:infinite_data/routes/routes.gr.dart';
+import 'package:infinite_data/utils/validator.dart';
 import 'package:infinite_data/views/widgets/create_input.dart';
 
 class Register extends StatefulWidget {
@@ -12,6 +16,14 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  Validator _validator = new Validator();
+  Auth _auth = new Auth();
+  TextEditingController _companyNameController = new TextEditingController();
+  TextEditingController _addressController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _contactNumberController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _verifyPasswordController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,27 +107,40 @@ class _RegisterState extends State<Register> {
                 children: [
                   FadeAnimation(
                     1.2,
-                    makeInput(label: 'Company Name'),
+                    makeInput(
+                        label: 'Company Name',
+                        editingController: _companyNameController),
                   ),
                   FadeAnimation(
                     1.4,
-                    makeInput(label: 'Company Address'),
+                    makeInput(
+                        label: 'Company Address',
+                        editingController: _addressController),
                   ),
                   FadeAnimation(
                     1.8,
-                    makeInput(label: 'Email'),
+                    makeInput(
+                        label: 'Email', editingController: _emailController),
                   ),
                   FadeAnimation(
                     2,
-                    makeInput(label: 'Contact No.'),
+                    makeInput(
+                        label: 'Contact No.',
+                        editingController: _contactNumberController),
                   ),
                   FadeAnimation(
                     2.2,
-                    makeInput(label: 'Password'),
+                    makeInput(
+                        label: 'Password',
+                        obscureText: true,
+                        editingController: _passwordController),
                   ),
                   FadeAnimation(
                     2.4,
-                    makeInput(label: 'Confirm Password'),
+                    makeInput(
+                        label: 'Confirm Password',
+                        obscureText: true,
+                        editingController: _verifyPasswordController),
                   ),
                   SizedBox(height: 20.0),
                   FadeAnimation(
@@ -125,10 +150,7 @@ class _RegisterState extends State<Register> {
                       elevation: 1,
                       color: darkBlue,
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Packages()),
-                        );
+                        addCompany();
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
@@ -169,10 +191,7 @@ class _RegisterState extends State<Register> {
                     2.2,
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Login()),
-                        );
+                        Routes.navigator.pushNamed(Routes.login);
                       },
                       child: Text(
                         "Login",
@@ -193,5 +212,51 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  addCompany() async {
+    String companyName = _companyNameController.text;
+    String email = _emailController.text;
+    String address = _addressController.text;
+    String contactNumber = _contactNumberController.text;
+    String password = _passwordController.text;
+    String verifyPassword = _verifyPasswordController.text;
+    if (!_validator.validName(companyName).success) {
+      print(_validator.validName(companyName).message);
+      return;
+    }
+    if (!_validator.validAddress(address).success) {
+      print(_validator.validAddress(address).message);
+      return;
+    }
+    if (!_validator.validEmail(email).success) {
+      print(_validator.validEmail(email).message);
+      return;
+    }
+    if (!_validator.validContactNumber(contactNumber).success) {
+      print(_validator.validContactNumber(contactNumber).message);
+      return;
+    }
+    if (!_validator
+        .validPassword(password: password, verifyPassword: verifyPassword)
+        .success) {
+      print(_validator
+          .validPassword(password: password, verifyPassword: verifyPassword)
+          .message);
+      return;
+    }
+    Company company = Company(
+        address: address,
+        companyName: companyName,
+        contactNumber: contactNumber);
+    User user = User(
+        companyId: '', email: email, name: companyName, password: password);
+    ResponseHandler result = await _auth.registerCompany(company, user);
+
+    if (result.success) {
+      Routes.navigator.pushReplacementNamed(Routes.packages);
+    } else {
+      print(result.message);
+    }
   }
 }

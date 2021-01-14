@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1086055443079",
+    "project_id": "infinite-data-2021",
+    "storage_bucket": "infinite-data-2021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086055443079:android:8e2d13aa43a734d7442622",
+        "android_client_info": {
+          "package_name": "com.infinitogroup.infinitedata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086055443079-vfmpkocu3vb3ubi8pilkmsc3gkeh9uno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN4QUH164sB-SplPBqZNvF60Tn6fqeVsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086055443079-vfmpkocu3vb3ubi8pilkmsc3gkeh9uno.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
