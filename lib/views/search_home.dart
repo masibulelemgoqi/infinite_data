@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/auth.dart';
 import 'package:infinite_data/views/search_results.dart';
 
 class SearchHome extends StatefulWidget {
@@ -10,6 +11,7 @@ class SearchHome extends StatefulWidget {
 }
 
 class _SearchHomeState extends State<SearchHome> {
+  Auth _auth = Auth();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,10 +93,7 @@ class _SearchHomeState extends State<SearchHome> {
                 elevation: 1,
                 color: mainBlue,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SearchResults()),
-                  );
+                  _auth.logout();
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50.0),

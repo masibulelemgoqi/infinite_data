@@ -55,10 +55,13 @@ class Auth {
           await _companyCollection.doc(companyId).set({
             'company_name': companyDetails.getCompanyName(),
             'address': companyDetails.getAddress(),
-            'email': companyDetails.getAddress(),
-            'created_at': Constants.DATE_NOW,
-            'completed_registration': false
+            'email': userDetails.getEmail(),
+            'created_at': Constants.DATE_NOW
           });
+
+          await _userCollection
+              .doc(companyId)
+              .update({'completed_registration': false});
           return new ResponseHandler(true, 'Account registered successfully');
         } catch (e) {
           return new ResponseHandler(false, e.message);

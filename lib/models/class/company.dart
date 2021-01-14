@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Company {
-  String _id, _companyName, _address, _contactNumber;
+  String _id, _companyName, _address, _contactNumber, _email;
   Timestamp _createdAt, _nextBillingDate;
   Company(
       {String id,
@@ -9,7 +9,8 @@ class Company {
       String address,
       String contactNumber,
       Timestamp createdAt,
-      Timestamp nextBillingDate}) {
+      Timestamp nextBillingDate,
+      String email}) {
     _id = id;
     _companyName = companyName;
     _address = address;
