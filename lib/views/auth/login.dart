@@ -42,8 +42,7 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,68 +99,68 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  FadeAnimation(
-                    1.2,
-                    makeInput(
-                        label: 'Email', editingController: _emailController),
-                  ),
-                  FadeAnimation(
-                    1.4,
-                    makeInput(
-                        label: 'Password',
-                        obscureText: true,
-                        editingController: _passwordController),
-                  ),
-                  FadeAnimation(
-                    1.6,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Forgot Password?',
-                          style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
-                              fontSize: 16,
-                              color: darkColor,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  FadeAnimation(
-                    1.8,
-                    MaterialButton(
-                      height: 50.0,
-                      elevation: 1,
-                      color: mainBlue,
-                      onPressed: () {
-                        loginMethod();
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                      child: Text(
-                        'Login',
+            SizedBox(height: 30.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                FadeAnimation(
+                  1.2,
+                  makeInput(
+                      label: 'Email', editingController: _emailController),
+                ),
+                FadeAnimation(
+                  1.4,
+                  makeInput(
+                      label: 'Password',
+                      obscureText: true,
+                      editingController: _passwordController),
+                ),
+                FadeAnimation(
+                  1.6,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Forgot Password?',
                         style: GoogleFonts.roboto(
                           textStyle: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            fontSize: 16,
+                            color: darkColor,
                           ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                FadeAnimation(
+                  1.8,
+                  MaterialButton(
+                    height: 50.0,
+                    elevation: 1,
+                    color: mainBlue,
+                    onPressed: () {
+                      loginMethod();
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                    child: Text(
+                      'Login',
+                      style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            SizedBox(height: 50.0),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
