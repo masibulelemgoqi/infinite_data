@@ -42,163 +42,168 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              child: Column(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FadeAnimation(
+                      0.8,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Infinite',
+                            style: GoogleFonts.roboto(
+                              textStyle: TextStyle(
+                                fontSize: 38,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10.0),
+                          Text(
+                            'Data',
+                            style: GoogleFonts.roboto(
+                              textStyle: TextStyle(
+                                fontSize: 38,
+                                fontWeight: FontWeight.w900,
+                                color: mainBlue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 0),
+                    FadeAnimation(
+                      1,
+                      Text(
+                        'Login',
+                        style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 50.0),
+              Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   FadeAnimation(
-                    0.8,
+                    1.2,
+                    makeInput(
+                        label: 'Email', editingController: _emailController),
+                  ),
+                  FadeAnimation(
+                    1.4,
+                    makeInput(
+                        label: 'Password',
+                        obscureText: true,
+                        editingController: _passwordController),
+                  ),
+                  FadeAnimation(
+                    1.6,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          'Infinite',
+                          'Forgot Password?',
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
-                              fontSize: 38,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.black,
+                              fontSize: 16,
+                              color: darkColor,
                             ),
                           ),
-                        ),
-                        SizedBox(width: 10.0),
-                        Text(
-                          'Data',
-                          style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
-                              fontSize: 38,
-                              fontWeight: FontWeight.w900,
-                              color: mainBlue,
-                            ),
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   ),
-                  SizedBox(height: 0),
+                  SizedBox(height: 20.0),
                   FadeAnimation(
-                    1,
-                    Text(
-                      'Login',
-                      style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.black,
+                    1.8,
+                    MaterialButton(
+                      height: 50.0,
+                      elevation: 1,
+                      color: mainBlue,
+                      onPressed: () {
+                        loginMethod();
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                      child: Text(
+                        'Login',
+                        style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 30.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                FadeAnimation(
-                  1.2,
-                  makeInput(
-                      label: 'Email', editingController: _emailController),
-                ),
-                FadeAnimation(
-                  1.4,
-                  makeInput(
-                      label: 'Password',
-                      obscureText: true,
-                      editingController: _passwordController),
-                ),
-                FadeAnimation(
-                  1.6,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
-                            fontSize: 16,
-                            color: darkColor,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20.0),
-                FadeAnimation(
-                  1.8,
-                  MaterialButton(
-                    height: 50.0,
-                    elevation: 1,
-                    color: mainBlue,
-                    onPressed: () {
-                      loginMethod();
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    child: Text(
-                      'Login',
-                      style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 50.0),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FadeAnimation(
-                  2,
-                  Text(
-                    "Don't have an accout?",
-                    style: GoogleFonts.roboto(
-                      textStyle: TextStyle(
-                        fontSize: 16,
-                        color: darkColor,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 5.0),
-                FadeAnimation(
-                  2.2,
-                  GestureDetector(
-                    onTap: () {
-                      Routes.navigator.pushNamed(Routes.register);
-                    },
-                    child: Text(
-                      "Register",
+              SizedBox(height: 100.0),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FadeAnimation(
+                    2,
+                    Text(
+                      "Don't have an accout?",
                       style: GoogleFonts.roboto(
                         textStyle: TextStyle(
                           fontSize: 16,
                           color: darkColor,
-                          fontWeight: FontWeight.w900,
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  SizedBox(width: 5.0),
+                  FadeAnimation(
+                    2.2,
+                    GestureDetector(
+                      onTap: () {
+                        Routes.navigator.pushNamed(Routes.register);
+                      },
+                      child: Text(
+                        "Register",
+                        style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                            fontSize: 16,
+                            color: darkColor,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
