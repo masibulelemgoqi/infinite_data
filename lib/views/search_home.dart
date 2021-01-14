@@ -29,9 +29,8 @@ class _SearchHomeState extends State<SearchHome> {
           ),
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 70.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,

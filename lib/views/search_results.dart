@@ -38,7 +38,10 @@ class _SearchResultsState extends State<SearchResults> {
             border: InputBorder.none,
             suffixIcon: IconButton(
               onPressed: () => _controller.clear(),
-              icon: Icon(Icons.clear),
+              icon: Icon(
+                Icons.clear,
+                color: darkOrange,
+              ),
             ),
           ),
         ),
