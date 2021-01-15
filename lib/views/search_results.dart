@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/routes/routes.gr.dart';
 
 class SearchResults extends StatefulWidget {
   @override
@@ -46,8 +47,11 @@ class _SearchResultsState extends State<SearchResults> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
@@ -64,53 +68,58 @@ class _SearchResultsState extends State<SearchResults> {
   Widget makeResults({fullname, idNumnber}) {
     return Column(
       children: [
-        Material(
-          elevation: 2,
-          borderRadius: BorderRadius.circular(10.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      fullname,
-                      style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
+        GestureDetector(
+          onTap: () {
+            Routes.navigator.pushNamed(Routes.viewCustomer);
+          },
+          child: Material(
+            elevation: 2,
+            borderRadius: BorderRadius.circular(10.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        fullname,
+                        style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 5.0),
-                    Text(
-                      idNumnber,
-                      style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: textColor,
+                      SizedBox(height: 5.0),
+                      Text(
+                        idNumnber,
+                        style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: textColor,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(width: 10.0),
-                IconButton(
-                  icon: Icon(
-                    Icons.add_circle_outline,
-                    color: mainOrange,
+                      )
+                    ],
                   ),
-                  onPressed: () {},
-                )
-              ],
+                  SizedBox(width: 10.0),
+                  IconButton(
+                    icon: Icon(
+                      Icons.add_circle_outline,
+                      color: mainOrange,
+                    ),
+                    onPressed: () {},
+                  )
+                ],
+              ),
             ),
           ),
         ),

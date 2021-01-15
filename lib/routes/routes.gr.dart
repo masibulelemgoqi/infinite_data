@@ -13,6 +13,7 @@ import 'package:infinite_data/views/auth/register.dart';
 import 'package:infinite_data/views/auth/packages.dart';
 import 'package:infinite_data/views/search_home.dart';
 import 'package:infinite_data/views/search_results.dart';
+import 'package:infinite_data/views/view_customer.dart';
 
 class Routes {
   static const welcomePage = '/';
@@ -21,6 +22,7 @@ class Routes {
   static const packages = '/packages';
   static const searchHome = '/search-home';
   static const searchResults = '/search-results';
+  static const viewCustomer = '/view-customer';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Routes>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -56,6 +58,11 @@ class Routes {
       case Routes.searchResults:
         return MaterialPageRoute(
           builder: (_) => SearchResults(),
+          settings: settings,
+        );
+      case Routes.viewCustomer:
+        return MaterialPageRoute(
+          builder: (_) => ViewCustomer(),
           settings: settings,
         );
       default:

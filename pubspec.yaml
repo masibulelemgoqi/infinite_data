@@ -23,6 +23,8 @@ dependencies:
   #Object comparism instead of == and hashCode
   equatable: ^1.2.3
 
+  page_transition: ^1.1.7+6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
