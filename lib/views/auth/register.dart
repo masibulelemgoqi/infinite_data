@@ -43,8 +43,11 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
