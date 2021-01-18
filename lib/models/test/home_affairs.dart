@@ -1,4 +1,5 @@
 import 'package:infinite_data/models/data/ResponseData.dart';
+import 'package:infinite_data/models/data/SearchHandler.dart';
 
 class HomeAffairs {
   String _name;
@@ -14,14 +15,19 @@ class HomeAffairs {
     _idNumber = idNumber;
   }
 
-  Future<ResponseData> searchWithIdNumber(
-      {String name, String idNumber}) async {
-    List<HomeAffairs> user = people.where(
-        (element) => element._idNumber == idNumber || element._name == name);
+  Future<SearchHandler> searchPerson({String keyWord}) async {
+    List<HomeAffairs> user = people
+        .where((element) =>
+            element._idNumber == keyWord || element._name == keyWord)
+        .toList();
     if (user.length > 0) {
-      return new ResponseData(true, user[0]);
+      return new SearchHandler(
+        true,
+        SearchSource.HOME_AFFAIRS,
+        user,
+      );
     }
-    return new ResponseData(false, '');
+    return new SearchHandler(false, SearchSource.HOME_AFFAIRS, []);
   }
 
   List<HomeAffairs> get people => [

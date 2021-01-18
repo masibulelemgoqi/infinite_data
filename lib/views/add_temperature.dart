@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
 
-class AddTempareture extends StatefulWidget {
+class AddTemperature extends StatefulWidget {
   @override
-  _AddTemparetureState createState() => _AddTemparetureState();
+  _AddTemperatureState createState() => _AddTemperatureState();
 }
 
-class _AddTemparetureState extends State<AddTempareture> {
+class _AddTemperatureState extends State<AddTemperature> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +40,7 @@ class _AddTemparetureState extends State<AddTempareture> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Add Tempareture',
+                'Add Temperature',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.roboto(
                   textStyle: TextStyle(

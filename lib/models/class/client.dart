@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:infinite_data/models/data/SearchHandler.dart';
+import 'package:infinite_data/models/test/department_of_health.dart';
+import 'package:infinite_data/models/test/home_affairs.dart';
 import 'package:infinite_data/utils/constants.dart';
 import 'package:infinite_data/models/data/responseHandler.dart';
 
@@ -49,17 +52,53 @@ class Client {
   }
 
   Future<ResponseHandler> addClient(Client _client) async {
-    var checkClient = await _clientCollection
-        .where('id_number', isEqualTo: _client.getIdNumber())
-        .get();
-    if (checkClient.docs.isEmpty) {
-      var userAdd = await _clientCollection.add({
-        'name': _client.getName(),
-        'id_number': _client.getIdNumber(),
-        'contact_number': _client.getContactNumber(),
-        'created_at': Constants.DATE_NOW
-      });
-      var userId = userAdd.id;
+    try {
+      var checkClient = await _clientCollection
+          .where('id_number', isEqualTo: _client.getIdNumber())
+          .get();
+      if (checkClient.docs.isEmpty) {
+        var userAdd = await _clientCollection.add({
+          'name': _client.getName(),
+          'id_number': _client.getIdNumber(),
+          'contact_number': _client.getContactNumber(),
+          'created_at': Constants.DATE_NOW
+        });
+        return ResponseHandler(true, 'User added successfully');
+        // var userId = userAdd.id;
+      }
+      return ResponseHandler(false, 'User already exists');
+    } catch (e) {
+      return ResponseHandler(false, e.message);
     }
+  }
+
+  Future<SearchHandler> searchClient({keyWord}) async {
+    QuerySnapshot idCheck = await Constants.CLIENT_COLLECTION
+        .where('id_number', isEqualTo: keyWord)
+        .get();
+    QuerySnapshot nameCheck;
+    if (idCheck.docs.length == 0) {
+      nameCheck = await Constants.CLIENT_COLLECTION
+          .where('name', isEqualTo: keyWord)
+          .get();
+    }
+
+    if (idCheck.docs.length == 0 && nameCheck.docs.length == 0) {
+      DepartmentOfHealth _doh = DepartmentOfHealth();
+      SearchHandler dohData = await _doh.searchPerson(keyWord: keyWord);
+      if (dohData.success) {
+        return dohData;
+      }
+      HomeAffairs _ha = HomeAffairs();
+      SearchHandler haData = await _ha.searchPerson(keyWord: keyWord);
+
+      if (haData.success) {
+        return haData;
+      }
+
+      return SearchHandler(false, SearchSource.NO_SOURCE, '');
+    }
+    return SearchHandler(true, SearchSource.OUR_DB,
+        idCheck.docs.length > 0 ? idCheck : nameCheck);
   }
 }

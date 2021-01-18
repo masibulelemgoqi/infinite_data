@@ -3,6 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
 import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/models/class/client.dart';
+import 'package:infinite_data/models/data/ResponseData.dart';
+import 'package:infinite_data/models/data/SearchHandler.dart';
+import 'package:infinite_data/models/test/department_of_health.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 import 'package:infinite_data/views/search_results.dart';
 
@@ -12,6 +16,7 @@ class SearchHome extends StatefulWidget {
 }
 
 class _SearchHomeState extends State<SearchHome> {
+  TextEditingController _searchText = TextEditingController();
   Auth _auth = Auth();
   @override
   Widget build(BuildContext context) {
@@ -76,16 +81,19 @@ class _SearchHomeState extends State<SearchHome> {
                 Material(
                   elevation: 3,
                   borderRadius: BorderRadius.circular(50.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(15.0),
-                      fillColor: Colors.white,
-                      hintText: 'Search Customer...',
-                      hintStyle: TextStyle(color: hintColor),
-                      border: InputBorder.none,
-                      suffixIcon: Icon(
-                        Icons.search,
-                        color: textColor,
+                  child: Form(
+                    child: TextFormField(
+                      controller: _searchText,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15.0),
+                        fillColor: Colors.white,
+                        hintText: 'Search Customer...',
+                        hintStyle: TextStyle(color: hintColor),
+                        border: InputBorder.none,
+                        suffixIcon: Icon(
+                          Icons.search,
+                          color: textColor,
+                        ),
                       ),
                     ),
                   ),
@@ -99,7 +107,8 @@ class _SearchHomeState extends State<SearchHome> {
                   elevation: 1,
                   color: mainBlue,
                   onPressed: () {
-                    Routes.navigator.pushNamed(Routes.searchResults);
+                    _searchPerson();
+                    // Routes.navigator.pushNamed(Routes.searchResults);
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50.0),
@@ -121,5 +130,16 @@ class _SearchHomeState extends State<SearchHome> {
         ),
       ),
     );
+  }
+
+  void _searchPerson() async {
+    String _keyWords = _searchText.text.trim();
+    if (_keyWords.isNotEmpty) {
+      Client _client = Client();
+      SearchHandler _results = await _client.searchClient(keyWord: _keyWords);
+      if (_results.success) {
+        Routes.navigator.pushNamed(Routes.searchResults, arguments: _results);
+      }
+    }
   }
 }

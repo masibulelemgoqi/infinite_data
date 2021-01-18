@@ -1,15 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/client.dart';
+import 'package:infinite_data/models/data/SearchHandler.dart';
+import 'package:infinite_data/models/test/department_of_health.dart';
+import 'package:infinite_data/models/test/home_affairs.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 
 class SearchResults extends StatefulWidget {
+  final SearchHandler searchHandler;
+  const SearchResults({@required this.searchHandler});
   @override
   _SearchResultsState createState() => _SearchResultsState();
 }
 
 class _SearchResultsState extends State<SearchResults> {
   var _controller = TextEditingController();
+  SearchHandler _searchHandler;
+  Client _client = Client();
+  DepartmentOfHealth _departmentOfHealth = DepartmentOfHealth();
+  HomeAffairs _homeAffairs = HomeAffairs();
+
+  @override
+  void initState() {
+    _searchHandler = widget.searchHandler;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,21 +69,60 @@ class _SearchResultsState extends State<SearchResults> {
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              makeResults(fullname: 'John Doe', idNumnber: '892898 3766 087'),
-              makeResults(fullname: 'John Doe', idNumnber: '892898 3766 087'),
-              makeResults(fullname: 'John Doe', idNumnber: '892898 3766 087')
-            ],
-          ),
-        ),
+        child: handleClient(),
       ),
     );
   }
 
-  Widget makeResults({fullname, idNumnber}) {
+  Widget handleClient() {
+    switch (_searchHandler.source) {
+      case 'department_of_health':
+        List<DepartmentOfHealth> _doh =
+            _searchHandler.data as List<DepartmentOfHealth>;
+        return ListView.builder(
+          padding: const EdgeInsets.all(10.0),
+          itemCount: _doh.length,
+          itemBuilder: (ctx, index) {
+            var person = _doh[index];
+            return makeResults(
+                fullname: person.name, idNumber: person.idNumber);
+          },
+        );
+        break;
+      case 'home_affairs':
+        List<HomeAffairs> _ha = _searchHandler.data as List<HomeAffairs>;
+        return ListView.builder(
+          padding: const EdgeInsets.all(10.0),
+          itemCount: _ha.length,
+          itemBuilder: (ctx, index) {
+            var person = _ha[index];
+            return makeResults(
+                fullname: person.name, idNumber: person.idNumber);
+          },
+        );
+        break;
+      case 'our_db':
+        QuerySnapshot _clientQuery = _searchHandler.data as QuerySnapshot;
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(10.0),
+          itemCount: _clientQuery.docs.length,
+          itemBuilder: (ctx, index) {
+            DocumentSnapshot person =
+                _clientQuery.docs[index] as DocumentSnapshot;
+            _client.setClient(person);
+            return makeResults(
+                fullname: _client.getName(), idNumber: _client.getIdNumber());
+          },
+        );
+        break;
+      default:
+        return Container();
+        break;
+    }
+  }
+
+  Widget makeResults({fullname, idNumber}) {
     return Column(
       children: [
         GestureDetector(
@@ -99,7 +156,7 @@ class _SearchResultsState extends State<SearchResults> {
                       ),
                       SizedBox(height: 5.0),
                       Text(
-                        idNumnber,
+                        idNumber,
                         style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                             fontSize: 14,
@@ -111,13 +168,20 @@ class _SearchResultsState extends State<SearchResults> {
                     ],
                   ),
                   SizedBox(width: 10.0),
-                  IconButton(
-                    icon: Icon(
-                      Icons.add_circle_outline,
-                      color: mainOrange,
-                    ),
-                    onPressed: () {},
-                  )
+                  _searchHandler.source != SearchSource.OUR_DB ||
+                          _searchHandler.source != SearchSource.NO_SOURCE
+                      ? IconButton(
+                          icon: Icon(
+                            Icons.add_circle_outline,
+                            color: mainOrange,
+                          ),
+                          onPressed: () async {
+                            Client _person =
+                                Client(idNumber: idNumber, name: fullname);
+                            await _person.addClient(_person);
+                          },
+                        )
+                      : SizedBox.shrink()
                 ],
               ),
             ),

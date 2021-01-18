@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
-import 'package:infinite_data/views/add_tempareture.dart';
+import 'package:infinite_data/views/add_temperature.dart';
 import 'package:infinite_data/views/widgets/previous_temp.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -161,7 +161,7 @@ class _ViewCustomerState extends State<ViewCustomer>
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            child: AddTempareture(),
+                            child: AddTemperature(),
                           ),
                         );
                       },

@@ -13,6 +13,7 @@ import 'package:infinite_data/views/auth/register.dart';
 import 'package:infinite_data/views/auth/packages.dart';
 import 'package:infinite_data/views/search_home.dart';
 import 'package:infinite_data/views/search_results.dart';
+import 'package:infinite_data/models/data/SearchHandler.dart';
 import 'package:infinite_data/views/view_customer.dart';
 
 class Routes {
@@ -56,8 +57,12 @@ class Routes {
           settings: settings,
         );
       case Routes.searchResults:
+        if (hasInvalidArgs<SearchHandler>(args, isRequired: true)) {
+          return misTypedArgsRoute<SearchHandler>(args);
+        }
+        final typedArgs = args as SearchHandler;
         return MaterialPageRoute(
-          builder: (_) => SearchResults(),
+          builder: (_) => SearchResults(searchHandler: typedArgs),
           settings: settings,
         );
       case Routes.viewCustomer:

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:infinite_data/models/data/ResponseData.dart';
+import 'package:infinite_data/models/data/SearchHandler.dart';
 
 class DepartmentOfHealth {
   String _name;
@@ -14,9 +14,9 @@ class DepartmentOfHealth {
   String get status => _status;
   set status(String value) => _status = value;
 
-  Timestamp _dateTested;
-  Timestamp get dateTested => _dateTested;
-  set dateTested(Timestamp dateTested) => _dateTested = dateTested;
+  String _dateTested;
+  String get dateTested => _dateTested;
+  set dateTested(String dateTested) => _dateTested = dateTested;
   DepartmentOfHealth({name, idNumber, status, dateTested}) {
     _name = name;
     _idNumber = idNumber;
@@ -24,13 +24,15 @@ class DepartmentOfHealth {
     _dateTested = dateTested;
   }
 
-  Future<ResponseData> searchPerson({String idNumber, String name}) async {
-    List<DepartmentOfHealth> person = people.where(
-        (element) => element._idNumber == idNumber || element._name == name);
+  Future<SearchHandler> searchPerson({String keyWord}) async {
+    List<DepartmentOfHealth> person = people
+        .where((element) =>
+            element._idNumber == keyWord || element._name == keyWord)
+        .toList();
     if (person.length > 0) {
-      return new ResponseData(true, person[0]);
+      return new SearchHandler(true, SearchSource.DEPARTMENT_OF_HEALTH, person);
     }
-    return new ResponseData(false, 'Never tested');
+    return new SearchHandler(false, SearchSource.DEPARTMENT_OF_HEALTH, []);
   }
 
   List<DepartmentOfHealth> get people => [
