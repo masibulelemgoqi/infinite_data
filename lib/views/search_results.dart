@@ -21,6 +21,8 @@ class _SearchResultsState extends State<SearchResults> {
   Client _client = Client();
   DepartmentOfHealth _departmentOfHealth = DepartmentOfHealth();
   HomeAffairs _homeAffairs = HomeAffairs();
+  List<DepartmentOfHealth> _doh = [];
+  List<HomeAffairs> _ha = [];
 
   @override
   void initState() {
@@ -75,29 +77,35 @@ class _SearchResultsState extends State<SearchResults> {
   }
 
   Widget handleClient() {
+    print(_searchHandler.source);
     switch (_searchHandler.source) {
       case 'department_of_health':
-        List<DepartmentOfHealth> _doh =
-            _searchHandler.data as List<DepartmentOfHealth>;
+        _doh = _searchHandler.data as List<DepartmentOfHealth>;
         return ListView.builder(
           padding: const EdgeInsets.all(10.0),
           itemCount: _doh.length,
           itemBuilder: (ctx, index) {
             var person = _doh[index];
             return makeResults(
-                fullname: person.name, idNumber: person.idNumber);
+                fullname: person.name,
+                idNumber: person.idNumber,
+                isOnDb: person.isOnDb,
+                index: index);
           },
         );
         break;
       case 'home_affairs':
-        List<HomeAffairs> _ha = _searchHandler.data as List<HomeAffairs>;
+        _ha = _searchHandler.data as List<HomeAffairs>;
         return ListView.builder(
           padding: const EdgeInsets.all(10.0),
           itemCount: _ha.length,
           itemBuilder: (ctx, index) {
             var person = _ha[index];
             return makeResults(
-                fullname: person.name, idNumber: person.idNumber);
+                fullname: person.name,
+                idNumber: person.idNumber,
+                isOnDb: person.isOnDb,
+                index: index);
           },
         );
         break;
@@ -112,7 +120,9 @@ class _SearchResultsState extends State<SearchResults> {
                 _clientQuery.docs[index] as DocumentSnapshot;
             _client.setClient(person);
             return makeResults(
-                fullname: _client.getName(), idNumber: _client.getIdNumber());
+                fullname: _client.getName(),
+                idNumber: _client.getIdNumber(),
+                isOnDb: _client.isOnDb);
           },
         );
         break;
@@ -122,12 +132,13 @@ class _SearchResultsState extends State<SearchResults> {
     }
   }
 
-  Widget makeResults({fullname, idNumber}) {
+  Widget makeResults({fullname, idNumber, isOnDb, index}) {
     return Column(
       children: [
         GestureDetector(
           onTap: () {
-            Routes.navigator.pushNamed(Routes.viewCustomer);
+            Routes.navigator
+                .pushNamed(Routes.viewCustomer, arguments: idNumber);
           },
           child: Material(
             elevation: 2,
@@ -168,8 +179,7 @@ class _SearchResultsState extends State<SearchResults> {
                     ],
                   ),
                   SizedBox(width: 10.0),
-                  _searchHandler.source != SearchSource.OUR_DB ||
-                          _searchHandler.source != SearchSource.NO_SOURCE
+                  !isOnDb
                       ? IconButton(
                           icon: Icon(
                             Icons.add_circle_outline,
@@ -179,6 +189,14 @@ class _SearchResultsState extends State<SearchResults> {
                             Client _person =
                                 Client(idNumber: idNumber, name: fullname);
                             await _person.addClient(_person);
+                            if (_searchHandler.source ==
+                                SearchSource.DEPARTMENT_OF_HEALTH) {
+                              _doh[index].isOnDb = true;
+                            } else if (_searchHandler.source ==
+                                SearchSource.HOME_AFFAIRS) {
+                              _ha[index].isOnDb = true;
+                            }
+                            setState(() {});
                           },
                         )
                       : SizedBox.shrink()

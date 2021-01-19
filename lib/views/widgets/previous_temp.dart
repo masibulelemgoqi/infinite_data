@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/screening.dart';
 
-Widget makeTemperature({temperature}) {
+Widget makeTemperature({clientId}) {
+  Screening _screening = Screening();
   return Center(
     child: Container(
       padding: EdgeInsets.all(10.0),
@@ -25,46 +28,73 @@ Widget makeTemperature({temperature}) {
           )
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                temperature,
-                style: GoogleFonts.roboto(
-                  textStyle: TextStyle(
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
+      child: StreamBuilder(
+          stream: _screening.getScreening(clientId),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return loader();
+            }
+
+            List<DocumentSnapshot> docs = snapshot.data.docs;
+            if (docs.length == 0) {
+              return Center(
+                child: Text(
+                  'No record',
+                  style: GoogleFonts.roboto(
+                    textStyle: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                '\u2103',
-                style: GoogleFonts.roboto(
-                  textStyle: TextStyle(
-                    fontSize: 35.0,
-                    color: Colors.white,
-                  ),
+              );
+            }
+
+            _screening.populateScreening(docs[0]);
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _screening.temperature.toStringAsFixed(2),
+                      style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                          fontSize: 35.0,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '\u2103',
+                      style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                          fontSize: 35.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Text(
-            'Last Temperature',
-            style: GoogleFonts.roboto(
-              textStyle: TextStyle(
-                fontSize: 12.0,
-                color: Colors.white,
-              ),
-            ),
-          )
-        ],
-      ),
+                Text(
+                  'Last Temperature',
+                  style: GoogleFonts.roboto(
+                    textStyle: TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            );
+          }),
     ),
   );
 }

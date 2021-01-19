@@ -9,32 +9,39 @@ class Client {
   String _id, _name, _idNumber, _contactNumber;
   Timestamp _createdAt;
   final _clientCollection = Constants.CLIENT_COLLECTION;
+  bool _isOnDb;
+  bool get isOnDb => _isOnDb;
+
+  set isOnDb(bool value) => _isOnDb = value;
+
   Client(
       {String id,
       String name,
       String idNumber,
       String contactNumber,
-      Timestamp createdAt}) {
+      Timestamp createdAt,
+      bool isOnDb}) {
     _id = id;
     _name = name;
     _idNumber = idNumber;
     _contactNumber = contactNumber;
     _createdAt = createdAt;
+    _isOnDb = isOnDb;
   }
 
-  getId() {
+  String getId() {
     return _id;
   }
 
-  getName() {
+  String getName() {
     return _name;
   }
 
-  getIdNumber() {
+  String getIdNumber() {
     return _idNumber;
   }
 
-  getContactNumber() {
+  String getContactNumber() {
     return _contactNumber;
   }
 
@@ -42,13 +49,21 @@ class Client {
     _id = client.id;
     var data = client.data();
     _name = data['name'];
-    _contactNumber = data['contact_number'];
+    _contactNumber =
+        data.containsKey('contact_number') ? data['contact_number'] : '';
     _idNumber = data['id_number'];
     _createdAt = data['createdAt'];
+    _isOnDb = true;
   }
 
   Stream<DocumentSnapshot> getClient(id) {
     return _clientCollection.doc(id).snapshots();
+  }
+
+  Stream<QuerySnapshot> getClientByIdNumber({String idNumber}) {
+    return _clientCollection
+        .where('id_number', isEqualTo: idNumber.trim())
+        .snapshots();
   }
 
   Future<ResponseHandler> addClient(Client _client) async {
@@ -72,7 +87,23 @@ class Client {
     }
   }
 
-  Future<SearchHandler> searchClient({keyWord}) async {
+  Future<SearchHandler> searchClient({String keyWord}) async {
+    keyWord = keyWord.trim();
+    if (keyWord.contains(' ')) {
+      List keys = keyWord.split(' ');
+
+      String firstname = keys[0].toString().substring(0, 1).toUpperCase() +
+          keys[0]
+              .toString()
+              .substring(1, keys[0].toString().length)
+              .toLowerCase();
+      String lastname = keys[1].toString().substring(0, 1).toUpperCase() +
+          keys[1]
+              .toString()
+              .substring(1, keys[1].toString().length)
+              .toLowerCase();
+      keyWord = firstname + ' ' + lastname;
+    }
     QuerySnapshot idCheck = await Constants.CLIENT_COLLECTION
         .where('id_number', isEqualTo: keyWord)
         .get();
