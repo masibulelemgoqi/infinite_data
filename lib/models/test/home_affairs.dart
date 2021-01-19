@@ -10,9 +10,15 @@ class HomeAffairs {
   String get idNumber => _idNumber;
   set idNumber(String value) => _idNumber = value;
 
-  HomeAffairs({name, idNumber}) {
+  bool _isOnDb;
+  bool get isOnDb => _isOnDb;
+
+  set isOnDb(bool value) => _isOnDb = value;
+
+  HomeAffairs({name, idNumber, isOnDb}) {
     _name = name;
     _idNumber = idNumber;
+    _isOnDb = isOnDb;
   }
 
   Future<SearchHandler> searchPerson({String keyWord}) async {
@@ -31,7 +37,9 @@ class HomeAffairs {
   }
 
   List<HomeAffairs> get people => [
-        new HomeAffairs(idNumber: '0202106543211', name: "Sean Doe"),
-        new HomeAffairs(idNumber: '9810155964086', name: "Masibulele Mgoqi"),
+        new HomeAffairs(
+            idNumber: '0202106543211', name: "Sean Doe", isOnDb: false),
+        new HomeAffairs(
+            idNumber: '9810155964086', name: "Masibulele Mgoqi", isOnDb: false),
       ];
 }

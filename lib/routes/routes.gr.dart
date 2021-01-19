@@ -66,8 +66,12 @@ class Routes {
           settings: settings,
         );
       case Routes.viewCustomer:
+        if (hasInvalidArgs<String>(args, isRequired: true)) {
+          return misTypedArgsRoute<String>(args);
+        }
+        final typedArgs = args as String;
         return MaterialPageRoute(
-          builder: (_) => ViewCustomer(),
+          builder: (_) => ViewCustomer(idNumber: typedArgs),
           settings: settings,
         );
       default:

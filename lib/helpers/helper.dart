@@ -8,3 +8,13 @@ final hintColor = Color(0xFFDEDEDE);
 final backgroundColor = Color(0xFFF3F5FA);
 final mainOrange = Color(0xFFFC8621);
 final darkOrange = Color(0xFFE38534);
+
+Widget loader() {
+  return Container(
+    child: Center(
+      child: CircularProgressIndicator(
+        backgroundColor: mainOrange,
+      ),
+    ),
+  );
+}

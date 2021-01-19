@@ -17,11 +17,17 @@ class DepartmentOfHealth {
   String _dateTested;
   String get dateTested => _dateTested;
   set dateTested(String dateTested) => _dateTested = dateTested;
-  DepartmentOfHealth({name, idNumber, status, dateTested}) {
+
+  bool _isOnDb;
+  bool get isOnDb => _isOnDb;
+
+  set isOnDb(bool value) => _isOnDb = value;
+  DepartmentOfHealth({name, idNumber, status, dateTested, isOnDb}) {
     _name = name;
     _idNumber = idNumber;
     _status = status;
     _dateTested = dateTested;
+    _isOnDb = isOnDb;
   }
 
   Future<SearchHandler> searchPerson({String keyWord}) async {
@@ -40,11 +46,13 @@ class DepartmentOfHealth {
             dateTested: '15/12/2020',
             idNumber: '9101015432106',
             name: 'John Doe',
+            isOnDb: false,
             status: 'Negative'),
         new DepartmentOfHealth(
             dateTested: '03/01/2021',
             idNumber: '0001015432106',
             name: 'Jane Doe',
+            isOnDb: false,
             status: 'Positive'),
       ];
 }

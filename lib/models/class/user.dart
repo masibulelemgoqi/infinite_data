@@ -67,6 +67,10 @@ class User {
         .snapshots();
   }
 
+  Future<DocumentSnapshot> currentUserDoc() {
+    return Constants.USER_COLLECTION.doc(Constants.AUTH.currentUser.uid).get();
+  }
+
   populateUser(DocumentSnapshot user) {
     var id = user.id;
     var data = user.data();
