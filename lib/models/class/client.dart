@@ -127,7 +127,7 @@ class Client {
         return haData;
       }
 
-      return SearchHandler(false, SearchSource.NO_SOURCE, '');
+      return SearchHandler(false, SearchSource.NO_SOURCE, 'User not found');
     }
     return SearchHandler(true, SearchSource.OUR_DB,
         idCheck.docs.length > 0 ? idCheck : nameCheck);

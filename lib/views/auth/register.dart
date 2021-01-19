@@ -225,25 +225,26 @@ class _RegisterState extends State<Register> {
     String password = _passwordController.text;
     String verifyPassword = _verifyPasswordController.text;
     if (!_validator.validName(companyName).success) {
-      print(_validator.validName(companyName).message);
+      errorFloatingFlushbar(_validator.validName(companyName).message);
       return;
     }
     if (!_validator.validAddress(address).success) {
-      print(_validator.validAddress(address).message);
+      errorFloatingFlushbar(_validator.validAddress(address).message);
       return;
     }
     if (!_validator.validEmail(email).success) {
-      print(_validator.validEmail(email).message);
+      errorFloatingFlushbar(_validator.validEmail(email).message);
       return;
     }
     if (!_validator.validContactNumber(contactNumber).success) {
-      print(_validator.validContactNumber(contactNumber).message);
+      errorFloatingFlushbar(
+          _validator.validContactNumber(contactNumber).message);
       return;
     }
     if (!_validator
         .validPassword(password: password, verifyPassword: verifyPassword)
         .success) {
-      print(_validator
+      errorFloatingFlushbar(_validator
           .validPassword(password: password, verifyPassword: verifyPassword)
           .message);
       return;
@@ -259,7 +260,7 @@ class _RegisterState extends State<Register> {
     if (result.success) {
       Routes.navigator.pushReplacementNamed(Routes.packages);
     } else {
-      print(result.message);
+      errorFloatingFlushbar(result.message);
     }
   }
 }

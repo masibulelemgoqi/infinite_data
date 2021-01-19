@@ -42,7 +42,8 @@ class WelcomePage extends StatelessWidget {
                     } else {
                       // _currentUser.currentUser.delete();
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        Routes.navigator.pushReplacementNamed(Routes.register);
+                        Routes.navigator
+                            .pushReplacementNamed(Routes.searchHome);
                       });
                     }
                   } else {
@@ -173,11 +174,11 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  Widget loader() {
-    return Container(
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
+  // Widget loader() {
+  //   return Container(
+  //     child: Center(
+  //       child: CircularProgressIndicator(),
+  //     ),
+  //   );
+  // }
 }

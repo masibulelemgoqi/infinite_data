@@ -138,8 +138,13 @@ class _SearchHomeState extends State<SearchHome> {
       Client _client = Client();
       SearchHandler _results = await _client.searchClient(keyWord: _keyWords);
       if (_results.success) {
+        _searchText.text = '';
         Routes.navigator.pushNamed(Routes.searchResults, arguments: _results);
+      } else {
+        errorFloatingFlushbar(_results.data.toString());
       }
+    } else {
+      errorFloatingFlushbar('Provide keywords for your search');
     }
   }
 }

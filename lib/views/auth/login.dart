@@ -222,12 +222,13 @@ class _LoginState extends State<Login> {
     String password = _passwordController.text;
 
     if (!_validator.validEmail(email).success) {
-      print(_validator.validEmail(email).message);
+      errorFloatingFlushbar(_validator.validEmail(email).message);
       return;
     }
 
     if (password.length < 6) {
-      print('Invalid password');
+      errorFloatingFlushbar('Invalid password');
+      return;
     }
 
     ResponseHandler res = await _auth.login(email, password);
@@ -259,7 +260,7 @@ class _LoginState extends State<Login> {
         }
       });
     } else {
-      print(res.message);
+      errorFloatingFlushbar(res.message);
     }
   }
 }

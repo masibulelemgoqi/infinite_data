@@ -49,22 +49,9 @@ class _SearchResultsState extends State<SearchResults> {
           ),
         ),
         titleSpacing: 0,
-        title: TextField(
-          controller: _controller,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 15.0, left: 0),
-            fillColor: Colors.white,
-            hintText: 'Search Customer...',
-            hintStyle: TextStyle(color: hintColor),
-            border: InputBorder.none,
-            suffixIcon: IconButton(
-              onPressed: () => _controller.clear(),
-              icon: Icon(
-                Icons.clear,
-                color: darkOrange,
-              ),
-            ),
-          ),
+        title: Text(
+          'Search results',
+          style: TextStyle(color: darkColor),
         ),
       ),
       body: GestureDetector(
@@ -137,6 +124,10 @@ class _SearchResultsState extends State<SearchResults> {
       children: [
         GestureDetector(
           onTap: () {
+            if (!isOnDb) {
+              errorFloatingFlushbar('Add the client first');
+              return;
+            }
             Routes.navigator
                 .pushNamed(Routes.viewCustomer, arguments: idNumber);
           },

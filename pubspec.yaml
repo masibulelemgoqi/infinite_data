@@ -25,6 +25,8 @@ dependencies:
 
   page_transition: ^1.1.7+6
 
+  flushbar: ^1.5.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
