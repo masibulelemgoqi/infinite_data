@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
-import 'package:infinite_data/models/class/auth.dart';
 import 'package:infinite_data/models/class/client.dart';
 import 'package:infinite_data/models/data/ResponseData.dart';
 import 'package:infinite_data/models/data/SearchHandler.dart';
 import 'package:infinite_data/models/test/department_of_health.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 import 'package:infinite_data/views/search_results.dart';
+import 'package:infinite_data/views/widgets/menu.dart';
 
 class SearchHome extends StatefulWidget {
   @override
@@ -17,20 +17,24 @@ class SearchHome extends StatefulWidget {
 
 class _SearchHomeState extends State<SearchHome> {
   TextEditingController _searchText = TextEditingController();
-  Auth _auth = Auth();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      drawer: SideMenu(),
       appBar: AppBar(
         elevation: 0,
         brightness: Brightness.light,
         backgroundColor: backgroundColor,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
           icon: Icon(
             Icons.menu,
-            size: 20.0,
+            size: 25.0,
             color: darkColor,
           ),
         ),
