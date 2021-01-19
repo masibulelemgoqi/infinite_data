@@ -17,6 +17,8 @@ class SearchHome extends StatefulWidget {
 
 class _SearchHomeState extends State<SearchHome> {
   TextEditingController _searchText = TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +29,12 @@ class _SearchHomeState extends State<SearchHome> {
         brightness: Brightness.light,
         backgroundColor: backgroundColor,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
           icon: Icon(
             Icons.menu,
-            size: 20.0,
+            size: 25.0,
             color: darkColor,
           ),
         ),
