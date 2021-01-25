@@ -39,9 +39,9 @@ class SideMenu extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.input),
+            leading: Icon(Icons.search),
             title: Text(
-              'Welcome',
+              'Search',
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                   fontSize: 16,
@@ -49,7 +49,9 @@ class SideMenu extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () => {},
+            onTap: () => {
+              Navigator.of(context).pop(),
+            },
           ),
           ListTile(
             leading: Icon(Icons.stacked_line_chart_outlined),
@@ -77,7 +79,9 @@ class SideMenu extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              Routes.navigator.pushNamed(Routes.appAdmin),
+            },
           ),
           ListTile(
             leading: Icon(Icons.border_color),

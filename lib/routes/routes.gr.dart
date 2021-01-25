@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
+import 'package:infinite_data/views/admin.dart';
 import 'package:infinite_data/views/other/welcome.dart';
 import 'package:infinite_data/views/auth/login.dart';
 import 'package:infinite_data/views/auth/register.dart';
@@ -26,6 +27,7 @@ class Routes {
   static const searchResults = '/search-results';
   static const viewCustomer = '/view-customer';
   static const statistics = '/stats';
+  static const appAdmin = '/app-admin';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Routes>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -79,6 +81,11 @@ class Routes {
       case Routes.statistics:
         return MaterialPageRoute(
           builder: (_) => Stats(),
+          settings: settings,
+        );
+      case Routes.appAdmin:
+        return MaterialPageRoute(
+          builder: (_) => Admin(),
           settings: settings,
         );
       default:
