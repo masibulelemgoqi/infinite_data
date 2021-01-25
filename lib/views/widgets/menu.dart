@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_data/helpers/helper.dart';
 import 'package:infinite_data/models/class/auth.dart';
 
 class SideMenu extends StatelessWidget {
@@ -22,7 +23,7 @@ class SideMenu extends StatelessWidget {
               ),
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: darkBlue,
             ),
           ),
           ListTile(
