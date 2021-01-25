@@ -4,9 +4,9 @@ import 'package:infinite_data/views/auth/packages.dart';
 import 'package:infinite_data/views/auth/register.dart';
 import 'package:infinite_data/views/other/welcome.dart';
 import 'package:infinite_data/views/search_home.dart';
-import 'package:infinite_data/views/search_results.dart';
 import 'package:infinite_data/views/stats.dart';
-import 'package:infinite_data/views/view_customer.dart';
+import 'package:infinite_data/views/screening/search_results.dart';
+import 'package:infinite_data/views/screening/view_customer.dart';
 
 @autoRouter
 class $Routes {
