@@ -63,7 +63,7 @@ Widget makeTemperature({clientId}) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _screening.temperature.toStringAsFixed(2),
+                      _screening.temperature.toStringAsFixed(1),
                       style: GoogleFonts.roboto(
                         textStyle: TextStyle(
                           fontSize: 35.0,
