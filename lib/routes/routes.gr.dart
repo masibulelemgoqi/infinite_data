@@ -14,6 +14,7 @@ import 'package:infinite_data/views/auth/packages.dart';
 import 'package:infinite_data/views/search_home.dart';
 import 'package:infinite_data/views/search_results.dart';
 import 'package:infinite_data/models/data/SearchHandler.dart';
+import 'package:infinite_data/views/stats.dart';
 import 'package:infinite_data/views/view_customer.dart';
 
 class Routes {
@@ -24,6 +25,7 @@ class Routes {
   static const searchHome = '/search-home';
   static const searchResults = '/search-results';
   static const viewCustomer = '/view-customer';
+  static const statistics = '/stats';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Routes>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -72,6 +74,11 @@ class Routes {
         final typedArgs = args as String;
         return MaterialPageRoute(
           builder: (_) => ViewCustomer(idNumber: typedArgs),
+          settings: settings,
+        );
+      case Routes.statistics:
+        return MaterialPageRoute(
+          builder: (_) => Stats(),
           settings: settings,
         );
       default:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
 import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/routes/routes.gr.dart';
 
 class SideMenu extends StatelessWidget {
   Auth _auth = Auth();
@@ -12,14 +13,25 @@ class SideMenu extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text(
-              'Kwik Spar, Kei Mthatha',
-              style: GoogleFonts.roboto(
-                textStyle: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
+            padding: const EdgeInsets.all(15.0),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Kwik Spar, Kei Mthatha',
+                    style: GoogleFonts.roboto(
+                      textStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.0)
+                ],
               ),
             ),
             decoration: BoxDecoration(
@@ -50,7 +62,9 @@ class SideMenu extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              Routes.navigator.pushNamed(Routes.statistics),
+            },
           ),
           ListTile(
             leading: Icon(Icons.verified_user),
