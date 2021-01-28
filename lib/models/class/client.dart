@@ -78,10 +78,8 @@ class Client {
           'contact_number': _client.getContactNumber(),
           'created_at': Constants.DATE_NOW
         });
-        return ResponseHandler(true, 'User added successfully');
-        // var userId = userAdd.id;
       }
-      return ResponseHandler(false, 'User already exists');
+      return ResponseHandler(true, 'User added successfully');
     } catch (e) {
       return ResponseHandler(false, e.message);
     }
