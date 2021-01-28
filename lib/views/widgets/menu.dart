@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
 import 'package:infinite_data/models/class/auth.dart';
+import 'package:infinite_data/models/class/company.dart';
+import 'package:infinite_data/models/class/user.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 
 class SideMenu extends StatelessWidget {
   Auth _auth = Auth();
+  Company _company = Company();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -20,16 +24,25 @@ class SideMenu extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    'Kwik Spar, Kei Mthatha',
-                    style: GoogleFonts.roboto(
-                      textStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  FutureBuilder(
+                      future: _company.getCompanyNameByUserCurrentUser(),
+                      builder: (ctx, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        }
+                        _company.populateCompany(snapshot.data);
+
+                        return Text(
+                          _company.companyName,
+                          style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }),
                   SizedBox(height: 20.0)
                 ],
               ),

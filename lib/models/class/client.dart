@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:infinite_data/models/class/user.dart';
 import 'package:infinite_data/models/data/SearchHandler.dart';
 import 'package:infinite_data/models/test/department_of_health.dart';
 import 'package:infinite_data/models/test/home_affairs.dart';
@@ -9,6 +10,7 @@ class Client {
   String _id, _name, _idNumber, _contactNumber;
   Timestamp _createdAt;
   final _clientCollection = Constants.CLIENT_COLLECTION;
+  User _user = User();
   bool _isOnDb;
   bool get isOnDb => _isOnDb;
 
@@ -71,11 +73,13 @@ class Client {
       var checkClient = await _clientCollection
           .where('id_number', isEqualTo: _client.getIdNumber())
           .get();
+      var companyId = (await _user.currentUserDoc()).data()['company_id'];
       if (checkClient.docs.isEmpty) {
-        var userAdd = await _clientCollection.add({
+        await _clientCollection.add({
           'name': _client.getName(),
           'id_number': _client.getIdNumber(),
           'contact_number': _client.getContactNumber(),
+          'creator_company_id': companyId,
           'created_at': Constants.DATE_NOW
         });
       }

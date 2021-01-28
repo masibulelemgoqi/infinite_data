@@ -1,9 +1,12 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/animations/fade_animation.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/Loader.dart';
 import 'package:infinite_data/models/class/client.dart';
 import 'package:infinite_data/models/data/SearchHandler.dart';
+import 'package:infinite_data/models/events/LoaderEvent.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 import 'package:infinite_data/views/widgets/menu.dart';
 
@@ -15,9 +18,16 @@ class SearchHome extends StatefulWidget {
 class _SearchHomeState extends State<SearchHome> {
   TextEditingController _searchText = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  EventBus _eventBus = EventBus();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    _eventBus.on<LoaderEvent>().listen((event) {
+      setState(() {
+        _isLoading = event.loader.getIsLoading;
+      });
+    });
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: backgroundColor,
@@ -66,7 +76,7 @@ class _SearchHomeState extends State<SearchHome> {
               FadeAnimation(
                 1,
                 Text(
-                  'Search customer by ID Number or Full Name. If never registered click register to add.',
+                  'Search customer by ID Number or Full Name.',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                     textStyle: TextStyle(
@@ -138,7 +148,9 @@ class _SearchHomeState extends State<SearchHome> {
     String _keyWords = _searchText.text.trim();
     if (_keyWords.isNotEmpty) {
       Client _client = Client();
+      _eventBus.fire(LoaderEvent(Loader(true)));
       SearchHandler _results = await _client.searchClient(keyWord: _keyWords);
+      _eventBus.fire(LoaderEvent(Loader(false)));
       if (_results.success) {
         _searchText.text = '';
         Routes.navigator.pushNamed(Routes.searchResults, arguments: _results);

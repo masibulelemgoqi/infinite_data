@@ -8,6 +8,8 @@ import 'package:infinite_data/utils/constants.dart';
 
 class Auth {
   final _auth = Constants.AUTH;
+  String _authId = Constants.AUTH.currentUser.uid;
+  String get authId => _authId;
   final _companyCollection = Constants.COMPANY_COLLECTION;
   final _userCollection = Constants.USER_COLLECTION;
   User _user = new User();
@@ -42,7 +44,7 @@ class Auth {
 
   logout() async {
     await _auth.signOut();
-    Routes.navigator.popAndPushNamed(Routes.login);
+    Routes.navigator.pushNamedAndRemoveUntil(Routes.login, (route) => false);
   }
 
   Future<ResponseHandler> registerCompany(

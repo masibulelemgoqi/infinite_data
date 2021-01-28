@@ -1,21 +1,24 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
+import 'package:infinite_data/models/class/Loader.dart';
 import 'package:infinite_data/models/class/auth.dart';
 import 'package:infinite_data/models/class/package.dart';
 import 'package:infinite_data/models/data/responseHandler.dart';
+import 'package:infinite_data/models/events/LoaderEvent.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 
-Widget makeCard({
-  context,
-  id,
-  Package package,
-  packageSize,
-  packageRange,
-  price,
-  startColor,
-  endColor,
-}) {
+Widget makeCard(
+    {context,
+    id,
+    Package package,
+    packageSize,
+    packageRange,
+    price,
+    startColor,
+    endColor,
+    eventBus}) {
   return AspectRatio(
     aspectRatio: 4 / 5,
     child: Container(
@@ -119,10 +122,13 @@ Widget makeCard({
           RaisedButton(
             onPressed: () async {
               Auth _auth = Auth();
+              eventBus.fire(LoaderEvent(Loader(true)));
+              await Future.delayed(const Duration(seconds: 2));
               ResponseHandler handler = await _auth.subscribe(package);
-
+              eventBus.fire(LoaderEvent(Loader(false)));
               if (handler.success) {
-                Routes.navigator.pushReplacementNamed(Routes.searchHome);
+                Routes.navigator.pushNamedAndRemoveUntil(
+                    Routes.searchHome, (route) => false);
               } else {
                 print(handler.message);
               }

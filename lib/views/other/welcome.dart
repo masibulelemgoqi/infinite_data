@@ -32,18 +32,20 @@ class WelcomePage extends StatelessWidget {
                     if (_user.getId() == _user.getCompanyId()) {
                       if (_user.getCompletedRegistration()) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Routes.navigator.pushNamed(Routes.searchHome);
+                          Routes.navigator.pushNamedAndRemoveUntil(
+                              Routes.searchHome, (route) => false);
                         });
                       } else {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Routes.navigator.pushNamed(Routes.packages);
+                          Routes.navigator.pushNamedAndRemoveUntil(
+                              Routes.packages, (route) => false);
                         });
                       }
                     } else {
                       // _currentUser.currentUser.delete();
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        Routes.navigator
-                            .pushReplacementNamed(Routes.searchHome);
+                        Routes.navigator.pushNamedAndRemoveUntil(
+                            Routes.searchHome, (route) => false);
                       });
                     }
                   } else {
@@ -173,12 +175,4 @@ class WelcomePage extends StatelessWidget {
       ),
     );
   }
-
-  // Widget loader() {
-  //   return Container(
-  //     child: Center(
-  //       child: CircularProgressIndicator(),
-  //     ),
-  //   );
-  // }
 }
