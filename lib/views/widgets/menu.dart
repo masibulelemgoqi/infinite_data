@@ -95,7 +95,7 @@ class SideMenu extends StatelessWidget {
               ),
             ),
             onTap: () => {
-              Navigator.of(context).pop(),
+              Routes.navigator.pushNamed(Routes.support),
             },
           ),
           Divider(),

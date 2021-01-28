@@ -3,6 +3,7 @@ import 'package:infinite_data/views/admin.dart';
 import 'package:infinite_data/views/auth/login.dart';
 import 'package:infinite_data/views/auth/packages.dart';
 import 'package:infinite_data/views/auth/register.dart';
+import 'package:infinite_data/views/other/support.dart';
 import 'package:infinite_data/views/other/welcome.dart';
 import 'package:infinite_data/views/screening/search_home.dart';
 import 'package:infinite_data/views/stats.dart';
@@ -21,4 +22,5 @@ class $Routes {
   ViewCustomer viewCustomer;
   Stats statistics;
   Admin appAdmin;
+  Support support;
 }
