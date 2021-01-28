@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_data/helpers/helper.dart';
 import 'package:infinite_data/models/class/auth.dart';
 import 'package:infinite_data/models/class/company.dart';
-import 'package:infinite_data/models/class/user.dart';
 import 'package:infinite_data/routes/routes.gr.dart';
 
 class SideMenu extends StatelessWidget {
@@ -78,7 +77,7 @@ class SideMenu extends StatelessWidget {
               ),
             ),
             onTap: () => {
-              Routes.navigator.pushNamed(Routes.statistics),
+              Routes.navigator.popAndPushNamed(Routes.statistics),
             },
           ),
           ListTile(
@@ -93,7 +92,7 @@ class SideMenu extends StatelessWidget {
               ),
             ),
             onTap: () => {
-              Routes.navigator.pushNamed(Routes.appAdmin),
+              Routes.navigator.popAndPushNamed(Routes.appAdmin),
             },
           ),
           ListTile(
@@ -108,7 +107,7 @@ class SideMenu extends StatelessWidget {
               ),
             ),
             onTap: () => {
-              Routes.navigator.pushNamed(Routes.support),
+              Routes.navigator.popAndPushNamed(Routes.support),
             },
           ),
           Divider(),
