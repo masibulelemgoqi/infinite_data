@@ -9,6 +9,7 @@ Widget makeTemperature({clientId}) {
   return Container(
     padding: EdgeInsets.all(10.0),
     decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
       gradient: LinearGradient(
         begin: Alignment.topLeft,
         colors: [
@@ -16,13 +17,13 @@ Widget makeTemperature({clientId}) {
           mainBlue,
         ],
       ),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey[350],
-          blurRadius: 10.0,
-          offset: Offset(5, 10),
-        )
-      ],
+      // boxShadow: [
+      //   BoxShadow(
+      //     color: Colors.grey[350],
+      //     blurRadius: 10.0,
+      //     offset: Offset(5, 10),
+      //   )
+      // ],
     ),
     child: StreamBuilder(
         stream: _screening.getScreening(clientId),
@@ -31,23 +32,23 @@ Widget makeTemperature({clientId}) {
             return loader();
           }
 
-          List<DocumentSnapshot> docs = snapshot.data.docs;
-          if (docs.length == 0) {
-            return Center(
-              child: Text(
-                'No record',
-                style: GoogleFonts.roboto(
-                  textStyle: TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            );
-          }
+          // List<DocumentSnapshot> docs = snapshot.data.docs;
+          // if (docs.length == 0) {
+          //   return Center(
+          //     child: Text(
+          //       'No record',
+          //       style: GoogleFonts.roboto(
+          //         textStyle: TextStyle(
+          //           fontSize: 30.0,
+          //           fontWeight: FontWeight.w900,
+          //           color: Colors.white,
+          //         ),
+          //       ),
+          //     ),
+          //   );
+          // }
 
-          _screening.populateScreening(docs[0]);
+          // _screening.populateScreening(docs[0]);
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,44 +56,71 @@ Widget makeTemperature({clientId}) {
             children: [
               Wrap(
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Savoy Spar',
-                        style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'Today',
-                        style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        '56.8',
-                        style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
+                  makeRowItem(
+                    screener: 'Savoy Spar',
+                    date: 'Today',
+                    temp: '40.5',
                   ),
+                  makeRowItem(
+                    screener: 'Apac Consulting',
+                    date: 'Yesterday',
+                    temp: '38.3',
+                  ),
+                  makeRowItem(
+                    screener: 'Walter Sisulu University',
+                    date: 'Jan 17, 2021',
+                    temp: '33.1',
+                  )
                 ],
               )
             ],
           );
         }),
+  );
+}
+
+Widget makeRowItem({screener, date, temp}) {
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: 120.0,
+            child: Text(
+              screener,
+              style: GoogleFonts.roboto(
+                textStyle: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          Text(
+            date,
+            style: GoogleFonts.roboto(
+              textStyle: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w300,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Text(
+            temp + '\u2103',
+            style: GoogleFonts.roboto(
+              textStyle: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+      SizedBox(height: 15.0)
+    ],
   );
 }
