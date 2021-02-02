@@ -8,7 +8,7 @@ import 'package:infinite_data/utils/constants.dart';
 
 class Auth {
   final _auth = Constants.AUTH;
-  String _authId = Constants.AUTH.currentUser.uid;
+  String _authId = Constants.AUTH.currentUser?.uid;
   String get authId => _authId;
   final _companyCollection = Constants.COMPANY_COLLECTION;
   final _userCollection = Constants.USER_COLLECTION;
