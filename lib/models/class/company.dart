@@ -87,4 +87,8 @@ class Company {
     String companyId = (await _user.currentUserDoc()).data()['company_id'];
     return _companyCollection.doc(companyId.trim()).get();
   }
+
+  Future<DocumentSnapshot> getCompanyById(String id) async {
+    return await _companyCollection.doc(id.trim()).get();
+  }
 }
