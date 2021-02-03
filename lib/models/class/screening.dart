@@ -5,28 +5,28 @@ import 'package:infinite_data/utils/constants.dart';
 class Screening {
   String _id;
   String get id => _id;
-
   set id(String value) => _id = value;
+
   String _status;
   String get status => _status;
-
   set status(String value) => _status = value;
+
   String _companyId;
   String get companyId => _companyId;
-
   set companyId(String value) => _companyId = value;
+
   String _clientId;
   String get clientId => _clientId;
-
   set clientId(String value) => _clientId = value;
+
   Timestamp _createdAt;
   Timestamp get createdAt => _createdAt;
-
   set createdAt(Timestamp value) => _createdAt = value;
+
   double _temperature;
   double get temperature => _temperature;
-
   set temperature(double value) => _temperature = value;
+
   var _screeningCollection = Constants.SCREENING_COLLECTION;
 
   Screening({id, status, temperature, companyId, clientId, createdAt}) {
@@ -39,10 +39,10 @@ class Screening {
   }
 
   Stream<QuerySnapshot> getScreening(String clientId) {
-    return Constants.SCREENING_COLLECTION
+    return _screeningCollection
         .where('client_id', isEqualTo: clientId.trim())
         .orderBy('created_at', descending: true)
-        .limit(1)
+        .limit(3)
         .snapshots();
   }
 
